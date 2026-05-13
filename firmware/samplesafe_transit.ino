@@ -38,15 +38,20 @@ struct SensorFrame {
   float temperatureC;
   float humidityPct;
   float accelMagnitude;
+  float accelX;
+  float accelY;
+  float accelZ;
 };
 
 const uint32_t CALIBRATION_MS = 5000;
 const uint32_t SAMPLE_INTERVAL_MS = 250;
-const uint32_t RISK_LATCH_MS = 1500;
+const uint32_t RISK_LATCH_MS = 5000;
 const float WARM_DRIFT_C = 4.0;
 const float HUMIDITY_DRIFT_PCT = 12.0;
 const float SHOCK_G = 2.2;
-const float TILT_G_DELTA = 0.45;
+const float TILT_ANGLE_DEG = 35.0;
+const uint8_t LID_OPEN_PROXIMITY = 20;
+const uint8_t SAMPLE_MISSING_PROXIMITY = 8;
 
 const int RGB_RED_PIN = 25;
 const int RGB_GREEN_PIN = 26;
@@ -61,6 +66,9 @@ uint32_t riskEnteredMs = 0;
 float baselineTempC = 25.0;
 float baselineHumidityPct = 50.0;
 float baselineAccelMagnitude = 1.0;
+float baselineAccelX = 0.0;
+float baselineAccelY = 0.0;
+float baselineAccelZ = 1.0;
 
 bool dryLidOpen = false;
 bool dryShock = false;
@@ -130,10 +138,10 @@ void updateAlertOutputs() {
   if (state == SAFE) {
     green = HIGH;
   } else if (state == WATCH) {
-    blue = HIGH;
+    red = HIGH;
+    green = HIGH;
   } else if (state == RISK) {
     red = HIGH;
-    blue = HIGH;
     buzzer = HIGH;
   } else if (state == INSPECT_NEEDED) {
     red = HIGH;
@@ -174,6 +182,23 @@ void printDryRunHelp() {
   Serial.println("  r = manual reset after inspection");
 }
 
+float angleBetweenVectorsDeg(float ax, float ay, float az, float bx, float by, float bz) {
+  float aMagnitude = sqrt(ax * ax + ay * ay + az * az);
+  float bMagnitude = sqrt(bx * bx + by * by + bz * bz);
+
+  if (aMagnitude < 0.01 || bMagnitude < 0.01) {
+    return 0.0;
+  }
+
+  float normalizedDot = (ax * bx + ay * by + az * bz) / (aMagnitude * bMagnitude);
+  if (normalizedDot > 1.0) {
+    normalizedDot = 1.0;
+  } else if (normalizedDot < -1.0) {
+    normalizedDot = -1.0;
+  }
+  return acos(normalizedDot) * 57.2957795;
+}
+
 void handleSerialCommands() {
   while (Serial.available() > 0) {
     char command = Serial.read();
@@ -211,6 +236,9 @@ SensorFrame readSensors() {
   frame.temperatureC = baselineTempC + (dryWarmDrift ? WARM_DRIFT_C + 1.0 : 0.0);
   frame.humidityPct = baselineHumidityPct + (dryWarmDrift ? HUMIDITY_DRIFT_PCT + 2.0 : 0.0);
   frame.accelMagnitude = baselineAccelMagnitude + (dryShock ? SHOCK_G + 0.5 : 0.0);
+  frame.accelX = 0.0;
+  frame.accelY = 0.0;
+  frame.accelZ = frame.accelMagnitude;
 
 #if ENABLE_SENSOR_LIBS
   if (si7021Ready) {
@@ -228,9 +256,18 @@ SensorFrame readSensors() {
     float ax = accel.acceleration.x / 9.80665;
     float ay = accel.acceleration.y / 9.80665;
     float az = accel.acceleration.z / 9.80665;
+    frame.accelX = ax;
+    frame.accelY = ay;
+    frame.accelZ = az;
     frame.accelMagnitude = sqrt(ax * ax + ay * ay + az * az);
     frame.shock = frame.accelMagnitude >= SHOCK_G;
-    frame.tiltHold = fabs(frame.accelMagnitude - baselineAccelMagnitude) >= TILT_G_DELTA;
+    frame.tiltHold = angleBetweenVectorsDeg(
+                       frame.accelX,
+                       frame.accelY,
+                       frame.accelZ,
+                       baselineAccelX,
+                       baselineAccelY,
+                       baselineAccelZ) >= TILT_ANGLE_DEG;
   }
 
   if (apdsReady) {
@@ -242,8 +279,10 @@ SensorFrame readSensors() {
     frame.lightIngress = clear > 120;
 
     uint8_t proximity = apds.readProximity();
-    frame.lidOpen = frame.lightIngress || proximity < 20;
-    frame.sampleMissing = proximity < 8;
+    frame.lidOpen = frame.lightIngress || proximity < LID_OPEN_PROXIMITY;
+    // Avoid escalating a simple open-lid demo to Risk before sample-presence
+    // thresholds are calibrated in the closed-box condition.
+    frame.sampleMissing = !frame.lidOpen && proximity < SAMPLE_MISSING_PROXIMITY;
   }
 #endif
 
@@ -257,6 +296,9 @@ void calibrateBaseline() {
   float tempSum = 0.0;
   float humiditySum = 0.0;
   float accelSum = 0.0;
+  float accelXSum = 0.0;
+  float accelYSum = 0.0;
+  float accelZSum = 0.0;
 
   while (millis() - startMs < CALIBRATION_MS) {
     handleSerialCommands();
@@ -264,6 +306,9 @@ void calibrateBaseline() {
     tempSum += frame.temperatureC;
     humiditySum += frame.humidityPct;
     accelSum += frame.accelMagnitude;
+    accelXSum += frame.accelX;
+    accelYSum += frame.accelY;
+    accelZSum += frame.accelZ;
     samples++;
     delay(SAMPLE_INTERVAL_MS);
   }
@@ -272,6 +317,9 @@ void calibrateBaseline() {
     baselineTempC = tempSum / samples;
     baselineHumidityPct = humiditySum / samples;
     baselineAccelMagnitude = accelSum / samples;
+    baselineAccelX = accelXSum / samples;
+    baselineAccelY = accelYSum / samples;
+    baselineAccelZ = accelZSum / samples;
   }
 
   logEvent("baseline_ready", "startup calibration complete");
@@ -319,6 +367,12 @@ void printFrame(const SensorFrame &frame) {
   Serial.print(frame.lidOpen ? "open" : "closed");
   Serial.print(",light=");
   Serial.print(frame.lightIngress ? "yes" : "no");
+  Serial.print(",shock=");
+  Serial.print(frame.shock ? "yes" : "no");
+  Serial.print(",tilt=");
+  Serial.print(frame.tiltHold ? "yes" : "no");
+  Serial.print(",sample_missing=");
+  Serial.print(frame.sampleMissing ? "yes" : "no");
   Serial.print(",reason=");
   Serial.println(latestReason);
 }

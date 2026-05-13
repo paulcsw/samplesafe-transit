@@ -65,3 +65,18 @@ Expected validator status:
 
 - The official heading structure should pass.
 - Validator should still fail until the required real JPG/PNG images and local MP4 are added.
+
+## 2026-05-13 - Demo Firmware Risk Fixes
+
+Changes:
+
+- Increased `RISK_LATCH_MS` from 1500 ms to 5000 ms so the Risk state is easier to capture on video.
+- Changed WATCH alert output from blue to amber-style red+green to match the green/amber/red demo narrative.
+- Kept RISK and INSPECT_NEEDED red-centered with buzzer output.
+- Guarded APDS9960 `sampleMissing` so a simple lid-open/light event stays Watch until closed-box sample-presence thresholds are calibrated.
+- Replaced acceleration-magnitude tilt detection with a baseline-vector angle check for more reliable tilt behavior.
+- Added shock, tilt, and sample_missing fields to serial sample output for easier demo evidence.
+
+Expected validator status:
+
+- Validator should still fail only because real media files are missing.
