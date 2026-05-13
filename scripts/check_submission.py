@@ -13,13 +13,12 @@ FRONTMATTER_KEYS = ("title", "publishDate", "excerpt", "image", "tags")
 
 REQUIRED_HEADINGS = (
     "Overview",
-    "Problem",
-    "Prototype",
-    "Demo",
-    "How It Works",
+    "Images",
+    "Videos",
+    "Features",
+    "Usage",
     "Tech Stack",
-    "Build And Usage Instructions",
-    "Prototype Limitations",
+    "Installation",
 )
 
 MEDIA_EXTENSIONS = {".jpg", ".jpeg", ".png", ".mp4"}
@@ -178,7 +177,7 @@ def validate_text(text: str, result: CheckResult) -> None:
     if "diagnostic device" in text.lower() and "not a diagnostic device" not in text.lower():
         result.warning("diagnostic wording found; make sure it is framed as a non-diagnostic prototype")
 
-    for heading in ("Tech Stack", "Build And Usage Instructions"):
+    for heading in ("Features", "Usage", "Tech Stack", "Installation"):
         body = heading_body(text, heading)
         non_empty_lines = [line.strip() for line in body.splitlines() if line.strip()]
         if len(non_empty_lines) < 3:

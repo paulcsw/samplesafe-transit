@@ -4,6 +4,7 @@ Read:
 
 - `.orchestrator/current_task.md`
 - `.orchestrator/source_facts.md`
+- `.orchestrator/pipeline.md`
 - `.orchestrator/task_board.md`
 
 Allowed write paths:
@@ -21,7 +22,7 @@ Tasks:
 4. Include serial logs for event timeline.
 5. Include OLED display update functions if library names are available; otherwise isolate display code behind functions.
 6. Create `scripts/check_submission.py` to validate:
-   - required headings
+   - required headings: Overview, Images, Videos, Features, Usage, Tech Stack, Installation
    - frontmatter keys
    - local image/video references
    - no YouTube links
@@ -41,4 +42,4 @@ Output:
 - Files changed
 - Commands run
 - Known compile assumptions
-- Next handoff for Claude Code
+- Next handoff for GPT Pro or Human PM

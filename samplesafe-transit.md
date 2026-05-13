@@ -14,17 +14,15 @@ tags:
 
 ## Overview
 
-SampleSafe Transit is a MYOSA-based biosample transport integrity monitoring prototype. It is designed to help explain what happened during transport by combining lid/light exposure, motion events, and temperature/humidity drift into a simple state display.
+SampleSafe Transit is a MYOSA-based biosample transport integrity monitoring prototype. It turns biosample transport from a single temperature number into a root-cause timeline: exposure, warming, and rough handling.
 
 This prototype is not a diagnostic device. It is an early-warning and handling-evidence tool for biosample transport workflows.
 
-## Problem
-
 Affordable transport monitors often record only temperature. That leaves a gap when a sample arrives in questionable condition, because the receiver may not know whether the issue came from lid opening, light ingress, shock, tilt, inversion, or gradual microclimate drift.
 
-SampleSafe Transit focuses on making those events visible and reviewable.
+SampleSafe Transit focuses on a simple judge-readable state machine: Safe -> Watch -> Risk -> Inspect Needed.
 
-## Prototype
+## Images
 
 ![SampleSafe Transit cover](./samplesafe-cover.jpg)
 
@@ -41,7 +39,7 @@ The prototype target uses:
 - RGB LED and buzzer for local alerts.
 - ESP32 serial logging, with BLE event timeline planned or enabled when hardware testing confirms it.
 
-## Demo
+## Videos
 
 <video controls src="./samplesafe-demo.mp4"></video>
 
@@ -60,7 +58,7 @@ The demo evidence should show:
 
 ![Event timeline or dashboard](./samplesafe-dashboard.jpg)
 
-## How It Works
+## Features
 
 At startup, the firmware performs a baseline calibration period. The main loop then reads sensor inputs, smooths noisy values, evaluates event detectors, updates the transport state machine, and writes state changes to local output.
 
@@ -70,6 +68,27 @@ The state machine is intentionally conservative:
 - Watch means an exposure, drift, or handling event should be observed.
 - Risk means stronger evidence of transport integrity loss has been detected.
 - Inspect Needed is latched so that closing the lid after an event does not automatically hide the history.
+
+Implemented in this repository:
+
+- Firmware state machine and serial event logging.
+- Dry-run serial commands for bench testing without sensor libraries.
+- Deterministic validation script for submission-format risks.
+
+Pending human verification:
+
+- Real sensor calibration values.
+- Final photos and local MP4 demo.
+- Confirmation of OLED, RGB LED, buzzer, and BLE behavior on the actual hardware.
+
+## Usage
+
+1. Power the ESP32-class board and keep the prototype closed and still during startup calibration.
+2. Watch the OLED state: Safe, Watch, Risk, or Inspect Needed.
+3. Open the lid or introduce light ingress to verify the Watch state.
+4. Shake or tilt the box to verify the Risk or Inspect Needed state.
+5. Close the lid and confirm that Inspect Needed remains latched after a serious event.
+6. Use the serial monitor or confirmed BLE dashboard to review the event timeline.
 
 ## Tech Stack
 
@@ -82,7 +101,7 @@ The state machine is intentionally conservative:
 - Arduino-style firmware in `firmware/samplesafe_transit.ino`.
 - Python validation script in `scripts/check_submission.py`.
 
-## Build And Usage Instructions
+## Installation
 
 1. Connect the APDS9960, MPU6050, SI7021, and OLED display over I2C.
 2. Open `firmware/samplesafe_transit.ino` in the Arduino IDE or a compatible ESP32 build environment.
@@ -91,21 +110,6 @@ The state machine is intentionally conservative:
 5. Open the serial monitor at 115200 baud.
 6. For dry-run testing, send `l`, `s`, `w`, `c`, or `r` in the serial monitor to emulate lid, shock, warm drift, close-lid, or reset actions.
 7. For hardware testing, update thresholds only after observing real baseline readings.
-
-## Current Implementation Status
-
-Implemented in this repository:
-
-- Submission markdown scaffold.
-- Firmware state machine and serial event logging.
-- Dry-run serial commands for bench testing without sensor libraries.
-- Validation script for MYOSA submission-format risks.
-
-Pending human verification:
-
-- Real sensor calibration values.
-- Final photos and local MP4 demo.
-- Confirmation of OLED, RGB LED, buzzer, and BLE behavior on the actual hardware.
 
 ## Prototype Limitations
 
@@ -126,6 +130,6 @@ BLE timeline output is treated as optional until confirmed on hardware. If BLE i
 - [ ] `samplesafe-demo.mp4` exists at repo root and plays locally.
 - [ ] Real prototype and sensor photos are added.
 - [ ] No YouTube links are used.
-- [ ] Tech stack and usage instructions are present.
+- [ ] Overview, Images, Videos, Features, Usage, Tech Stack, and Installation sections are present.
 - [ ] Claims match what was actually tested.
 - [ ] `python scripts/check_submission.py samplesafe-transit.md` passes.

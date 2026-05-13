@@ -4,7 +4,13 @@
 
 - [ ] `samplesafe-transit.md` exists
 - [ ] frontmatter complete
-- [ ] all required headings present
+- [ ] Overview section present
+- [ ] Images section present
+- [ ] Videos section present
+- [ ] Features section present
+- [ ] Usage section present
+- [ ] Tech Stack section present
+- [ ] Installation section present
 - [ ] cover image referenced and present
 - [ ] all images are local jpg/png
 - [ ] all videos are local mp4
@@ -30,9 +36,16 @@
 ## Code
 
 - [ ] firmware included or linked
-- [ ] installation/usage instructions included
+- [ ] Usage instructions included
+- [ ] Installation instructions included
 - [ ] tech stack included
 - [ ] validator passes
+
+## Review
+
+- [ ] GPT Pro compliance review complete
+- [ ] optional fresh-thread GPT Pro or Claude red-team complete, or explicitly skipped
+- [ ] accepted risks are documented
 
 ## Final Decision
 

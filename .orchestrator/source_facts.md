@@ -37,9 +37,21 @@ Use "implemented" only for features actually tested.
 
 Use "prototype limitation" for features not fully working.
 
+Use "fallback" when the serial log replaces an unfinished BLE dashboard.
+
 ## Hardware Truth Log
 
 Update this section by hand after each real hardware test.
+
+## Hardware Truth Checklist
+
+- [ ] APDS9960 tested
+- [ ] MPU6050 tested
+- [ ] SI7021 tested
+- [ ] OLED state display tested
+- [ ] RGB LED/buzzer tested
+- [ ] BLE dashboard tested
+- [ ] serial log fallback tested
 
 | Date | Item | Status | Evidence |
 | ---- | ---- | ------ | -------- |

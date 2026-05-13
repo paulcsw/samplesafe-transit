@@ -6,9 +6,10 @@ Submit final GitHub repository link before 17 May 2026 23:59:59 AoE.
 
 ## Objective
 
-Produce a MYOSA-compliant project blog package for SampleSafe Transit:
+Run a GPT-first mini orchestration for a MYOSA-compliant SampleSafe Transit submission package:
 
 - single markdown file
+- official Markdown sections
 - real images
 - local mp4 demo video
 - working prototype evidence
@@ -17,6 +18,7 @@ Produce a MYOSA-compliant project blog package for SampleSafe Transit:
 ## Non-Negotiable Submission Rules
 
 - Markdown file: `samplesafe-transit.md`
+- Required sections: Overview, Images, Videos, Features, Usage, Tech Stack, Installation
 - All submission media filenames lowercase, no spaces
 - Cover image required: `samplesafe-cover.jpg`
 - Local video required: `samplesafe-demo.mp4`
@@ -37,8 +39,15 @@ Show:
 
 ## Owners
 
-- GPT Pro: blog, checklist, final gate
-- Codex: scaffold, firmware MVP, validator script
-- Claude Code: local fixes, compile/path/debug pass
-- Claude Opus 4.7: independent red-team review
-- Human: hardware truth, photos, videos, final submit
+- Human PM: hardware truth, photos, videos, final submit
+- GPT Pro: blog producer, claim checker, demo script writer, compliance reviewer
+- Codex: firmware MVP, validator script, small repo patches
+- Claude or fresh GPT Pro thread: optional final red-team review only
+
+## Operating Rules
+
+- One model writes files at a time.
+- `source_facts.md` is updated by the human after real hardware tests.
+- Codex owns code and validator work.
+- GPT Pro owns final prose and claim policy.
+- Run the validator every day and before submission.

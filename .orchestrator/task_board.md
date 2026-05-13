@@ -1,24 +1,51 @@
 # Task Board
 
-## P0 - Submission Compliance
+## P0 - Repo And Control Plane
 
-Owner: GPT Pro + Codex
+Owner: Codex + Human
 
 Outputs:
 
-- `samplesafe-transit.md` with required headings
-- `scripts/check_submission.py` validator
+- `.orchestrator/`
+- `samplesafe-transit.md`
+- `firmware/samplesafe_transit.ino`
+- `scripts/check_submission.py`
 
 Done when:
 
-- validator passes
-- no YouTube links
-- local mp4 referenced
-- required headings present
+- repo is public on GitHub
+- initial commit is pushed
 
-## P0 - Firmware Demo MVP
+## P1 - Source Facts
 
-Owner: Codex, then Claude Code
+Owner: GPT Pro + Human
+
+Outputs:
+
+- `.orchestrator/source_facts.md`
+
+Done when:
+
+- tested / not tested / fallback status is explicit
+- claim policy is up to date
+
+## P2 - Blog Skeleton
+
+Owner: GPT Pro
+
+Outputs:
+
+- `samplesafe-transit.md`
+
+Done when:
+
+- Overview, Images, Videos, Features, Usage, Tech Stack, Installation sections exist
+- local media references are used
+- no completed feature is invented
+
+## P3 - Firmware MVP
+
+Owner: Codex
 
 Outputs:
 
@@ -26,14 +53,26 @@ Outputs:
 
 Done when:
 
-- compiles or has clear hardware-specific TODOs
-- reads or stubs APDS9960, MPU6050, SI7021 safely
-- displays Safe / Watch / Risk / Inspect Needed
-- serial event log exists even if BLE is incomplete
+- SAFE / WATCH / RISK / INSPECT_NEEDED state machine exists
+- APDS9960 / MPU6050 / SI7021 sections exist
+- serial event log fallback exists
 
-## P0 - Real Media Capture
+## P4 - Hardware Test Loop
 
-Owner: Human
+Owner: Human + GPT Pro
+
+Outputs:
+
+- updated `.orchestrator/source_facts.md`
+- test notes in `.orchestrator/handoff.md`
+
+Done when:
+
+- boot, APDS9960, MPU6050, SI7021, OLED, latch, and serial/BLE timeline are recorded as PASS, FAIL, or NOT READY
+
+## P5 - Media Capture
+
+Owner: Human + GPT Pro
 
 Outputs:
 
@@ -51,7 +90,7 @@ Done when:
 - filenames lowercase, no spaces
 - demo mp4 plays locally
 
-## P1 - Blog Polish
+## P6 - Blog Completion
 
 Owner: GPT Pro
 
@@ -61,20 +100,49 @@ Outputs:
 
 Done when:
 
-- overview, demo, features, usage, tech stack, installation all filled
-- no false implementation claims
+- claims match `source_facts.md`
 - limitations included
+- non-diagnostic wording included
 
-## P1 - Independent Red-Team
+## P7 - Compliance Gate
 
-Owner: Claude Opus 4.7
+Owner: Codex + GPT Pro
 
 Outputs:
 
-- `.orchestrator/opus_review.md`
+- validator result
+- final checklist update
 
 Done when:
 
-- blockers listed
-- must-fix items under 10
-- human resolves or explicitly accepts risks
+- validator passes
+- no YouTube links
+- cover image and local mp4 are present
+- no rejection blocker remains
+
+## P8 - Optional Red-Team
+
+Owner: Claude Opus or fresh GPT Pro thread
+
+Outputs:
+
+- `.orchestrator/redteam_review.md`
+
+Done when:
+
+- blockers are listed
+- final verdict is submit or do not submit yet
+
+## P9 - Submission
+
+Owner: Human
+
+Outputs:
+
+- GitHub repo link
+- MYOSA form submission
+
+Done when:
+
+- GitHub rendering is checked
+- final validator passes
