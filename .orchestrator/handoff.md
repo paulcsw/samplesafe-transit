@@ -37,10 +37,31 @@ Changes:
 
 - Reframed the control plane around Human PM, GPT Pro, Codex, and optional final red-team review.
 - Added `.orchestrator/pipeline.md`.
-- Updated official submission sections to Overview, Images, Videos, Features, Usage, Tech Stack, Installation.
+- Updated submission sections to the simplified GPT-first structure.
 - Removed Claude Code as a normal patching lane.
 
 Expected validator status:
 
 - The markdown structure should pass.
 - The validator should still fail until real local media files are added at repo root.
+
+## 2026-05-13 - Official Format Patch
+
+Changes:
+
+- Applied the patch-only zip for `samplesafe-transit.md`, `scripts/check_submission.py`, and `firmware/samplesafe_transit.ino`.
+- Aligned the control plane with the stricter official MYOSA structure:
+  - one-line tagline
+  - Acknowledgements
+  - Overview
+  - Demo / Examples with Images and Videos
+  - Features (Detailed)
+  - Usage Instructions
+  - Tech Stack
+  - Requirements / Installation
+- Firmware now shows `RISK` briefly before latching into `INSPECT_NEEDED`.
+
+Expected validator status:
+
+- The official heading structure should pass.
+- Validator should still fail until the required real JPG/PNG images and local MP4 are added.

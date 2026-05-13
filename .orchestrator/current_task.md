@@ -18,7 +18,17 @@ Run a GPT-first mini orchestration for a MYOSA-compliant SampleSafe Transit subm
 ## Non-Negotiable Submission Rules
 
 - Markdown file: `samplesafe-transit.md`
-- Required sections: Overview, Images, Videos, Features, Usage, Tech Stack, Installation
+- Required structure:
+  - one-line project tagline after frontmatter
+  - `## Acknowledgements`
+  - `## Overview`
+  - `## Demo / Examples`
+  - `### Images`
+  - `### Videos`
+  - `## Features (Detailed)`
+  - `## Usage Instructions`
+  - `## Tech Stack`
+  - `## Requirements / Installation`
 - All submission media filenames lowercase, no spaces
 - Cover image required: `samplesafe-cover.jpg`
 - Local video required: `samplesafe-demo.mp4`

@@ -11,7 +11,16 @@ Use only the facts in:
 Your job:
 
 1. Draft or revise `samplesafe-transit.md`.
-2. Keep the official MYOSA structure: Overview, Images, Videos, Features, Usage, Tech Stack, Installation.
+2. Keep the official MYOSA structure:
+   - one-line project tagline after frontmatter
+   - Acknowledgements
+   - Overview
+   - Demo / Examples
+   - Images and Videos subheadings
+   - Features (Detailed)
+   - Usage Instructions
+   - Tech Stack
+   - Requirements / Installation
 3. Ensure all claims are honest.
 4. Separate implemented features, fallback features, and prototype limitations.
 5. Keep the blog clear enough for a judge to understand in 5 minutes.

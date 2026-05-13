@@ -39,7 +39,9 @@ Outputs:
 
 Done when:
 
-- Overview, Images, Videos, Features, Usage, Tech Stack, Installation sections exist
+- one-line tagline and official MYOSA sections exist
+- Demo / Examples contains Images and Videos subheadings
+- Features (Detailed), Usage Instructions, Tech Stack, and Requirements / Installation are filled
 - local media references are used
 - no completed feature is invented
 

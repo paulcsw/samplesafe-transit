@@ -42,6 +42,7 @@ struct SensorFrame {
 
 const uint32_t CALIBRATION_MS = 5000;
 const uint32_t SAMPLE_INTERVAL_MS = 250;
+const uint32_t RISK_LATCH_MS = 1500;
 const float WARM_DRIFT_C = 4.0;
 const float HUMIDITY_DRIFT_PCT = 12.0;
 const float SHOCK_G = 2.2;
@@ -56,6 +57,7 @@ TransportState state = SAFE;
 String latestReason = "baseline";
 uint32_t bootMs = 0;
 uint32_t lastSampleMs = 0;
+uint32_t riskEnteredMs = 0;
 float baselineTempC = 25.0;
 float baselineHumidityPct = 50.0;
 float baselineAccelMagnitude = 1.0;
@@ -280,8 +282,16 @@ void evaluateState(const SensorFrame &frame) {
     return;
   }
 
+  if (state == RISK) {
+    if (millis() - riskEnteredMs >= RISK_LATCH_MS) {
+      setState(INSPECT_NEEDED, "inspection required after risk event");
+    }
+    return;
+  }
+
   if (frame.shock || frame.tiltHold || frame.sampleMissing) {
-    setState(INSPECT_NEEDED, "shock/tilt/sample removal risk");
+    riskEnteredMs = millis();
+    setState(RISK, "shock/tilt/sample removal risk");
     dryShock = false;
     return;
   }

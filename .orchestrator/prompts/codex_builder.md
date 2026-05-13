@@ -22,7 +22,16 @@ Tasks:
 4. Include serial logs for event timeline.
 5. Include OLED display update functions if library names are available; otherwise isolate display code behind functions.
 6. Create `scripts/check_submission.py` to validate:
-   - required headings: Overview, Images, Videos, Features, Usage, Tech Stack, Installation
+   - required tagline and headings:
+     - Acknowledgements
+     - Overview
+     - Demo / Examples
+     - Images
+     - Videos
+     - Features (Detailed)
+     - Usage Instructions
+     - Tech Stack
+     - Requirements / Installation
    - frontmatter keys
    - local image/video references
    - no YouTube links

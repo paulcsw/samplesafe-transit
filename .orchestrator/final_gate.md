@@ -4,13 +4,16 @@
 
 - [ ] `samplesafe-transit.md` exists
 - [ ] frontmatter complete
+- [ ] one-line project tagline present after frontmatter
+- [ ] Acknowledgements section present
 - [ ] Overview section present
-- [ ] Images section present
-- [ ] Videos section present
-- [ ] Features section present
-- [ ] Usage section present
+- [ ] Demo / Examples section present
+- [ ] Images subheading present
+- [ ] Videos subheading present
+- [ ] Features (Detailed) section present
+- [ ] Usage Instructions section present
 - [ ] Tech Stack section present
-- [ ] Installation section present
+- [ ] Requirements / Installation section present
 - [ ] cover image referenced and present
 - [ ] all images are local jpg/png
 - [ ] all videos are local mp4
@@ -36,8 +39,8 @@
 ## Code
 
 - [ ] firmware included or linked
-- [ ] Usage instructions included
-- [ ] Installation instructions included
+- [ ] Usage Instructions included
+- [ ] Requirements / Installation included
 - [ ] tech stack included
 - [ ] validator passes
 

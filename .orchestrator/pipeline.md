@@ -43,7 +43,15 @@ Outputs:
 
 Pass condition:
 
-- official sections exist: Overview, Images, Videos, Features, Usage, Tech Stack, Installation
+- official structure exists:
+  - one-line project tagline after frontmatter
+  - Acknowledgements
+  - Overview
+  - Demo / Examples with Images and Videos subheadings
+  - Features (Detailed)
+  - Usage Instructions
+  - Tech Stack
+  - Requirements / Installation
 - only local image and video references are used
 
 ## P3 - Firmware MVP
