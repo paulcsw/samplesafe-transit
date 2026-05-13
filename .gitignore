@@ -1,0 +1,14 @@
+# Local build and editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Arduino/PlatformIO output
+.pio/
+build/
+
+# Python cache
+__pycache__/
+*.pyc
+.uv-cache/
